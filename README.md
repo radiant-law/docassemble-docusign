@@ -1,12 +1,12 @@
 # docassemble-docusign
 
-Python docassemble module for integrating with DocuSign. More specifically, it provides a simple way to create and send envelopes with standards for anchor text that must be placed in your document.
+Python docassemble package for integrating with DocuSign. More specifically, it provides a simple way to create and send envelopes with standards for anchor text that must be placed in your document.
 
 ## How to use
 
 The module is built around one magical method, `create_envelope`, on one magical class, `EnvelopeCreator`. The function takes more arguments that would normally be palatable, however, it needs to be passed three different DocuSign credentials, which can be stored (JASON HELP HERE) and recalled as (JASON PLEASE).
 
-Before all this, you must create an integration key. This can be found in the DocuSign admin section, where you will also find your USER_ID, which we will need later.
+Before all this, you must create an integration key. This can be found in the DocuSign admin section, where you will also find your user ID, which we will need later.
 
 The first step is to obtain consent from the user you will be impersonating, as is generally polite. You need to open a web browser up to:
 
