@@ -1,0 +1,30 @@
+modules:
+  - docassemble.docusign.da_docusign
+---
+code: |
+  auth_request = DocuSign(auth_only=True)
+---
+mandatory: True
+code: |
+  intro_seen
+  if not 'code' in url_args:
+    get_auth
+  complete
+---
+question: Authorize Docassemble-DocuSign
+subquestion: |
+  For details on authorization, please see the documentation for the
+  docassemble-docusign package. For this interview to work, at a minimum
+  both `client-id` and `impersonated-user-guid` must be set in your
+  Docassemble configuration.
+field: intro_seen
+---
+event: get_auth
+question: Click To Authorize Docassemble to Use your DocuSign Account
+subquestion: |
+  ${ action_button_html(auth_request.authorization_link(), icon="lock", label="Authorize DocuSign", color="primary", size="md", new_window=False) }
+---
+event: complete
+question: Authorization Complete
+subquestion: |
+  You can now close this interview.

@@ -1,0 +1,116 @@
+modules:
+  - docassemble.docusign.da_docusign
+---
+objects:
+  recipient: DAList.using(object_type=Individual)
+  deliver_to: Individual
+---
+mandatory: true
+code: |
+  recipient.gather()
+  deliver_to.email
+  doc_review
+  signature_request = DocuSign()
+  data_sent, data_received, status_code = signature_request.get_signatures(test_recipients,test_documents,send_immediately=True,email_subject="Important Document to Sign")
+  if status_code == 201:
+    signature_success
+  else:
+    signature_fail
+---
+code: |
+  test_recipients = []
+  for r in recipient:
+    new_recipient = {}
+    new_recipient['name'] = r.name.firstlast()
+    new_recipient['email'] = r.email
+    new_recipient['group'] = 'signers'
+    new_recipient['routingOrder'] = 1
+    new_recipient['tabs'] = [
+        {
+          'type': 'signHere',
+          'anchorString': generate_anchor('signHere', r.email)
+        },
+        {
+          'type': 'date',
+          'anchorString': generate_anchor('date', r.email)
+        }
+      ]
+    test_recipients.append(new_recipient)
+    
+    
+  new_recipient = {}
+  new_recipient['name'] = deliver_to.name.firstlast()
+  new_recipient['email'] = deliver_to.email
+  new_recipient['group'] = 'certifiedDeliveries'
+  new_recipient['routingOrder'] = 2
+  test_recipients.append(new_recipient)
+  test_documents=[
+        {
+            'name': "Example Doc",
+            'fileExtension': 'pdf',
+            'documentBase64': make_document_base64(docusign_test_doc.pdf.path())
+        }
+  ]
+---
+question: |
+  Is there another recipient?
+yesno: recipient.there_is_another
+---
+question: |
+  Are there any recipients?
+yesno: recipient.there_are_any
+---
+generic object: Individual
+question: |
+  What is the recipient's name and email address?
+fields:
+  - First Name: x.name.first
+  - Last Name: x.name.last
+  - Email: x.email
+---
+question: |
+  What is the name and email address of the ultimate recipient?
+fields:
+  - First Name: deliver_to.name.first
+  - Last Name: deliver_to.name.last
+  - Email: deliver_to.email
+---
+question: Your Document
+subquestion: |
+  Press continue to send it for signatures.
+field: doc_review
+attachments:
+  - name: Your Document
+    filename: docusign_test_doc
+    variable name: docusign_test_doc
+    content: |
+      This is the content of the document we are generating.
+      It will be sent to and signed by:
+      
+      % for r in recipient:
+      
+      ${ generate_anchor('signHere', r.email) }  
+        
+      ***  
+        
+      ${ r.name } at ${ r.email }  
+      ${ generate_anchor('date', r.email) }
+      % endfor
+---
+question: Document Successfully Sent For Signature
+event: signature_success
+---
+question: Attempt to Send document For Signature Not Successful
+event: signature_fail
+subquestion: |
+  The data that was sent to the server is:
+  
+  ${ data_sent }
+  
+  The data returned from the server is:
+  
+  ${ data_received }
+  
+  The status code of message returned from the server is:
+  
+  ${ status_code }
