@@ -7,7 +7,6 @@ import json
 import base64
 import hashlib
 import re
-import docusign_esign as docusign
 from docassemble.base.util import DAError, log, interview_url, DAObject, defined, get_config, all_variables, DARedis, user_info, url_of
 
 __all__ = ['DocuSign','generate_anchor','make_document_base64']
