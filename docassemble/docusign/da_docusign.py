@@ -127,6 +127,7 @@ class DocuSign:
             'grant_type': 'urn:ietf:params:oauth:grant-type:jwt-bearer',
             'assertion': self.jwt_code
       })
+    log(request_for_token.status_code)
     log(request_for_token.text)
     self.token = json.loads(request_for_token.text)['access_token']
   
