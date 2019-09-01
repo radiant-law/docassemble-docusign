@@ -128,7 +128,7 @@ class DocuSign:
             'assertion': self.jwt_code
       })
     log(request_for_token.status_code)
-    log(request_for_token.text)
+    log(request_for_token.content)
     self.token = json.loads(request_for_token.text)['access_token']
   
   def get_user_info(self):
