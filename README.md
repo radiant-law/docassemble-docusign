@@ -152,6 +152,8 @@ recipients=[
 
 See the DocuSign API documentation for information on the features that are available in DocuSign envelopes.
 
+The `generate_anchor` function has an optional argument `uid` that will add an additional section to the anchor. Use this is if you want to distinguish between tags of the same type.
+
 When generating documents, use the `make_document_base64` function to convert the document to Base64 before adding it to the object.
 
 `make_document_base64` accepts a path to a document. If you want to use a dynamically-generated document in a Docassemble interview,
