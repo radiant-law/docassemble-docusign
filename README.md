@@ -123,7 +123,7 @@ document, to ensure that DocuSign will deal properly with them. When generating 
 
 An example of a correctly formated recipients object is:
 
-```
+```python
 recipients=[
         {
             'name': 'Doug Rattman',
@@ -162,7 +162,7 @@ document format you prefer.
 
 An example of a correctly formatted documents object is:
 
-```
+```python
 documents=[
         {
             'name': "Bring Your Daughter To Work Day",
@@ -179,6 +179,31 @@ documents=[
 
 There is an example interview provided in the package, `docusign_test_interview.yml`, that has an example of generating the
 recipient and document objects in code.
+
+[THE FOLLOWING NEEDS TO BE REPLACED WITH PROPER DOCUMENTATION ONCE THIS IS AGREED TO ACTUALLY WORK]
+You can create custom envelope fields with the optional `custom_fields` paramater. They're formatted like here https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create#textCustomField and here https://developers.docusign.com/esign-rest-api/reference/Envelopes/Envelopes/create#listCustomField, except they also have an additional `'type'` key/value which should either be `'list'` or `'text'`. For example:
+
+```python
+keys=[
+        {
+                'name': "Person At Fault",
+                'type': 'text',
+                'required': 'true',
+                'show': 'true'
+        },
+        {
+                'name': "Who Will Be Blamed",
+                'type': 'list',
+                'required': 'true',
+                'listItems': [
+                        'Me',
+                        'Me',
+                        'Every Time Me'
+                ],
+                'show': 'true'
+        }
+]
+```
 
 ### Send the Envelope to DocuSign
 

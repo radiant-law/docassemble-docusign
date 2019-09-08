@@ -150,7 +150,7 @@ class DocuSign:
     self.get_user_info()
     return self.extended_base_uri
 
-  def get_signatures(self, recipients, documents, send_immediately=False, email_subject="Please Sign", assign_doc_ids=True, assign_recipient_ids=True):
+  def get_signatures(self, recipients, documents, custom_fields=[], send_immediately=False, email_subject="Please Sign", assign_doc_ids=True, assign_recipient_ids=True, assign_field_ids=True):
         """Creates an envelope and prepares it to be sent to a number of recipients."""
         # Check received recipients are okay whilst rotating the format to fix Docusign API
         rotated_recipients = {}
@@ -209,6 +209,24 @@ class DocuSign:
             if 'documentBase64' not in document.keys():
                 raise DAError("Missing 'documentBase64' in document")
         
+        # Check received envelope custom fields and rotate format
+        rotated_fields = {'listCustomFields': [], 'testCustomFields': []}
+        for index, field in enumerate(custom_fields):
+            if assign_field_ids:
+                field['fieldId'] = index + 1
+            elif 'fieldId' not in field.keys():
+                raise DAError("Missing 'fieldId' in field whilst assign_field_ids is False")
+            if 'type' not in field.keys():
+                raise DAError("Missing 'type' in custom field")
+            if field['type'] == 'list':
+                del field['type']
+                rotated_fields['listCustomFields'].append(field)
+            elif field['type'] == 'text':
+                del field['type']
+                rotated_fields['textCustomFields'].append(field)
+            else:
+                raise DAError("Invalid custom field type")
+
         # Build our request json
         if send_immediately:
             status = "sent"
@@ -218,7 +236,8 @@ class DocuSign:
             'status': status,
             'emailSubject': email_subject,
             'recipients': rotated_recipients,
-            'documents': documents
+            'documents': documents,
+            'envelopecustomFields': rotated_fields
         }
         
         # Send off envelope request and return the results
