@@ -210,7 +210,7 @@ class DocuSign:
                 raise DAError("Missing 'documentBase64' in document")
         
         # Check received envelope custom fields and rotate format
-        rotated_fields = {'listCustomFields': [], 'testCustomFields': []}
+        rotated_fields = {'listCustomFields': [], 'textCustomFields': []}
         for index, field in enumerate(custom_fields):
             if assign_field_ids:
                 field['fieldId'] = index + 1
