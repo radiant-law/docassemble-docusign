@@ -238,6 +238,4 @@ def make_document_base64(document_path):
         
 def generate_anchor(tab_type, email, uid=''):
   """Generate standard anchor using SHA1 hash of email and standard abbreviation"""
-  if uid != '':
-    uid = '-' + uid
-  return hashlib.sha1(email.encode('utf-8')).hexdigest()[:10] + '-' + TAB_TYPES[tab_type]['abbreviation'] + uid
+  return hashlib.sha1(email.encode('utf-8')).hexdigest()[:10] + TAB_TYPES[tab_type]['abbreviation'] + uid
