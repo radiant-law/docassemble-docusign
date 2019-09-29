@@ -150,7 +150,7 @@ class DocuSign:
         self.get_user_info()
         return self.extended_base_uri
 
-    def get_signatures(self, recipients, documents, custom_fields=[], send_immediately=False, email_subject="Please Sign", assign_doc_ids=True, assign_recipient_ids=True, assign_field_ids=True):
+    def get_signatures(self, recipients, documents, custom_fields=[], send_immediately=False, email_subject="Please Sign", assign_doc_ids=True, assign_recipient_ids=True, assign_field_ids=True, **kwargs):
         """Creates an envelope and prepares it to be sent to a number of recipients."""
         # Check received recipients are okay whilst rotating the format to fix Docusign API
         rotated_recipients = {}
@@ -239,6 +239,9 @@ class DocuSign:
             'documents': documents,
             'envelopecustomFields': rotated_fields
         }
+
+        for key in kwargs:
+            request_json[key] = kwargs[key]
         
         # Send off envelope request and return the results
         if send_immediately:
