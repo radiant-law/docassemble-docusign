@@ -199,6 +199,8 @@ Then, call the `get_signatures()` function to send your documents to your recipi
 * `assign_doc_ids`: optional, deafults to `True`. Set to `False` if you are manually setting document IDs in your document object.
 * `assign_recipient_ids`: optional, deafaults to `True`. Set to `False` if you are manually setting recipient IDs in your recipients object.
 
+Any other paramaters will be added as additional parts of the request sent, for example, `emailBlurb="Please sign this document"` sets the email's body.
+
 `get_signatures` returns the JSON formatted version of your DocuSign envelope when `send_immediately` is `False`.
 If `send_immediately` is set to `True`, then it returns three values:
 
