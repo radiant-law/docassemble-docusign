@@ -7,7 +7,7 @@ with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setuptools.setup(
     name="docassemble-docusign",
-    version="0.1",
+    version="0.2",
     description="Python docassemble package for integrating with DocuSign",
     long_description=long_description,
     long_description_content_type='text/markdown',
